@@ -13,16 +13,17 @@ def get_ai_client():
     api_key = os.getenv('AI_API_KEY')
     base_url = os.getenv('AI_BASE_URL', 'https://api.deepseek.com')
     model = os.getenv('AI_MODEL', 'deepseek-v4-flash')
-    if not api_key:
-        return None, None
+   if not api_key:
+    print('[AI] API Key 未配置')
+    return None, None
     return OpenAI(api_key=api_key, base_url=base_url), model
 
 
 def _call(prompt, max_tokens=600):
     """调用 LLM，返回文本"""
     client, model = get_ai_client()
-    if not client:
-        return None
+   if not client:
+    return '(AI 调用失败: API Key 未配置，请前往「设置」页面填写)'
     try:
         resp = client.chat.completions.create(
             model=model,
