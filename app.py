@@ -419,8 +419,10 @@ else:
             if st.button('用户画像',use_container_width=True,key='bp'):
                 with st.spinner('分析中...'): st.session_state.ai_profile=ai_user_profile(data)
         for k,l in [('ai_insight','今日洞察'),('ai_advice','优化建议'),('ai_trend','趋势分析'),('ai_profile','用户画像')]:
-            if k in st.session_state:
+            if k in st.session_state and st.session_state[k]:
                 with st.container(border=True): st.write(f'**{l}**');st.write(st.session_state[k])
+            elif k in st.session_state and not st.session_state[k]:
+                del st.session_state[k]
         st.divider();st.subheader('问问 PersonalInsightAI')
         q=st.text_input('',placeholder='例如：今天效率为什么下降？',label_visibility='collapsed',key='aq')
         if st.button('分析',use_container_width=True,key='ask') and q.strip():
