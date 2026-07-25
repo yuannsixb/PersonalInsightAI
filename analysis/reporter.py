@@ -233,11 +233,15 @@ def build_insight_json():
     yesterday_h = df_yesterday['duration_min'].sum() / 60 if not df_yesterday.empty else 0
     yesterday_eff = round((scene_hours(df_yesterday, 'work') + scene_hours(df_yesterday, 'study')) / max(yesterday_h, 0.1) * 100, 1) if not df_yesterday.empty else None
 
-    # 30天
+        # 30天
     total_h_30d = df30['duration_min'].sum() / 60
-    work_h_30d_v2 = scene_hours(df30, 'work') if len(df30) <= len(df7) else scene_hours(df30, 'work')
+    work_h_30d = scene_hours(df30, 'work')
     study_h_30d = scene_hours(df30, 'study')
     leisure_h_30d = scene_hours(df30, 'leisure')
+    life_h_30d = scene_hours(df30, 'life')
+    unknown_h_30d = scene_hours(df30, 'unknown')
+    eff_30d = round((work_h_30d + study_h_30d) / max(total_h_30d, 0.1) * 100, 1)
+    active_days_30d = int(df30['event_date'].nunique())
 
     # 14天趋势（用于对比）
     fourteen_days_ago = (datetime.now() - timedelta(days=14)).strftime('%Y-%m-%d')
