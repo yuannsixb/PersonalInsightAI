@@ -300,9 +300,18 @@ def build_insight_json():
             'top_apps': top_apps(df7, 8),
         },
         'daily_trend': daily_trend(df7),
-        'thirty_days': {
+                'thirty_days': {
             'total_hours': round(total_h_30d, 1),
+            'total_records': int(len(df30)),
+            'active_days': active_days_30d,
+            'avg_daily_hours': round(total_h_30d / max(active_days_30d, 1), 1),
+            'efficiency': eff_30d,
+            'work_hours': work_h_30d,
             'study_hours': study_h_30d,
+            'leisure_hours': leisure_h_30d,
+            'life_hours': life_h_30d,
+            'unknown_hours': unknown_h_30d,
+            'top_apps': top_apps(df30, 8),
         },
         'study_trend': study_trend,
     }
