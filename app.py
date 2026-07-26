@@ -281,7 +281,11 @@ if raw_df is None:
 
 df = raw_df.copy()
 df_today = df[df['event_date']==today_str].copy()
-df_today['显示名'] = df_today.apply(lambda r: app_name(r['process_name'], r.get('window_title','')), axis=1)
+df_today['显示名'] = df_today.apply(
+    lambda r: app_name(
+        str(r['process_name']) if pd.notna(r.get('process_name')) else '',
+        str(r.get('window_title','')) if pd.notna(r.get('window_title')) else ''
+    ), axis=1)
 total_stats = calc_scene_stats(df)
 today_stats = calc_scene_stats(df_today) if not df_today.empty else pd.DataFrame()
 
@@ -422,6 +426,7 @@ else:
             if k in st.session_state and st.session_state[k]:
                 with st.container(border=True): st.write(f'**{l}**');st.write(st.session_state[k])
             elif k in st.session_state and not st.session_state[k]:
+                # 清除无效的 None/空结果
                 del st.session_state[k]
         st.divider();st.subheader('问问 PersonalInsightAI')
         q=st.text_input('',placeholder='例如：今天效率为什么下降？',label_visibility='collapsed',key='aq')
